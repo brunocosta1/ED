@@ -121,6 +121,33 @@ int Altura(arvore *a){
 	}
 }
 
+int ArvoreBalanceada(arvore *a){
+
+    if(a != NULL){
+
+        int alturaDireita, alturaEsquerda;
+
+        alturaEsquerda = Altura(a->esq);
+        alturaDireita = Altura(a->dir);
+
+        if(abs(alturaDireita - alturaEsquerda) > 1)
+            return 0;
+        else{
+
+            int temp1 = ArvoreBalanceada(a->dir), temp2 = ArvoreBalanceada(a->esq);
+
+            if(temp1 && temp2)
+                return 1;
+            else
+                return 0;
+
+        }
+
+
+    }
+
+}
+
 //Imprimir os elementos de um determinado nivel da arvore
 
 
@@ -296,7 +323,7 @@ void Menu(arvore *a){
             case 1:
 
                 printf("Digite o nome do arquivo: ");
-                scanf("%s", &nome_arquivo);
+                scanf("%s", nome_arquivo);
                 arq = fopen(nome_arquivo, "rt");
                 a = LerArvore(a,arq);
                 fclose(arq);
@@ -334,6 +361,10 @@ void Menu(arvore *a){
                 break;
                 
             case 6:
+                if(ArvoreBalanceada(a))
+                    printf("Árvore balanceada!\n");
+                else
+                    printf("Árvore não balanceada!\n");
             	break;
             	
             case 7:
