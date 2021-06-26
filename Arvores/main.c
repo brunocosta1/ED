@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
+#include <math.h>
 
 typedef struct arvore{
 
@@ -11,7 +13,7 @@ typedef struct arvore{
 
 }arvore;
 
-// CÃ³digo para verificar qual sistema operacional estÃ¡ rodando.
+// Código para verificar qual sistema operacional está rodando.
 
 #ifdef __unix__
     #include <unistd.h>
@@ -21,7 +23,7 @@ typedef struct arvore{
     #include <windows.h>
 #endif
 
-// FunÃ§Ã£o para deixar o menu mais dinÃ¢mico.
+// Função para deixar o menu mais dinâmico.
 
 void Pausa(){
 
@@ -47,9 +49,9 @@ arvore *CriaElemento(int info){
     return nova;
 
 }
-// FunÃ§Ã£o para ler Ã¡rvore a partir de um arquivo
+// Função para ler árvore a partir de um arquivo
 
-arvore *LerArvore(FILE *arq){
+arvore *LerArvore(arvore *a, FILE *arq){
 
     char c;
     int num;
@@ -63,14 +65,14 @@ arvore *LerArvore(FILE *arq){
     }else{
 
         arvore *a = CriaElemento(num);
-        a->esq = LerArvore(arq);
-        a->dir = LerArvore(arq);
+        a->esq = LerArvore(a,arq);
+        a->dir = LerArvore(a,arq);
         fscanf(arq, "%c", &c);
         return a;
     }
 }
 
-// FunÃ§Ã£o para contar o nÃºmero de elementos na Ã¡rvore
+// Função para contar o número de elementos na árvore
 
 int Contador(arvore *a){
 
@@ -80,7 +82,7 @@ int Contador(arvore *a){
         return 0;
 }
 
-// FunÃ§Ã£o para verificar se um elemento existe na Ã¡rvore
+// Função para verificar se um elemento existe na árvore
 
 int Existe(arvore *a, int info){
 
@@ -98,8 +100,45 @@ int Existe(arvore *a, int info){
     }
 }
 
+//Função para contar a altura da árvore
 
-// FunÃ§Ãµes de impressÃ£o da Ã¡rvore
+int Altura(arvore *a){
+
+	if(a==NULL){
+		return 0;
+	}
+	else{
+		int he, hd;
+		he=Altura(a->esq);
+		hd=Altura(a->dir);
+
+		if(he>hd){
+			return he + 1;
+		}
+		else{
+			return hd + 1;
+		}
+	}
+}
+
+//Imprimir os elementos de um determinado nivel da arvore
+
+
+void ImprimirNivel(arvore *a, int cont, int nivel){
+	
+	if(a!=NULL){
+		if(cont==nivel){
+			printf("%d ", a->info);
+		}
+		else{
+			ImprimirNivel(a->esq,cont+1,nivel);
+			ImprimirNivel(a->dir,cont+1,nivel);
+		}
+	}
+}
+
+
+// Funções de impressão da árvore
 
 void ImprimePreOrdem(arvore *a){
 
@@ -143,113 +182,179 @@ void ImprimirNoFolha(arvore *a){
     }
 }
 
-// FunÃ§Ãµes do menu
+void ImprimirLargura(arvore *a){
+
+	int i;
+	int nivel=0;
+
+	if(a!=NULL){
+		for(i=1;i<=Altura(a);i++){
+			ImprimirNivel(a,0,nivel++);
+			printf("\n");
+		}
+	}
+}
+
+//Função que verifica se a árvore é cheia
+
+int ArvoreCheia(arvore *a){
+
+	int altura=Altura(a);
+	int nos=Contador(a);
+	int valor=pow(2,altura);
+	valor=valor-1;
+
+	if(a==NULL){
+		return 0;
+	}
+	else{
+		if(valor==nos){
+			return 1;
+		}
+	}
+}
+
+// Funções do menu
 
 void MenuDeImpressao(arvore *a){
 
     int opc = 0;
     
-    while(opc != 3){
+    while(opc != 6){
 
-        printf("Digite a forma de impressÃ£o: \n");
-        printf("[0] - PrÃ©-ordem\n");
-        printf("[1] - Em-ordem\n");
-        printf("[2] - PÃ³s-ordem\n");
-        printf("[3] - Voltar\n");
-        printf("[4] - Sair\n\n");
-        printf("OpÃ§Ã£o :");
+        printf("\nDigite a forma de impressão: \n\n");
+        printf("[1] - Pré-ordem\n");
+        printf("[2] - Em-ordem\n");
+        printf("[3] - Pós-ordem\n");
+        printf("[4] - Largura\n");
+        printf("[5] - Voltar\n");
+        printf("[6] - Sair\n\n");
+        printf("Opção: ");
         scanf("%d", &opc);
 
         switch(opc){
 
-            case 0:
-                printf("PrÃ©-ordem: ");
-                ImprimePreOrdem(a);
-                break;
             case 1:
-                printf("Em-ordem: ");
-                ImprimeEmOrdem(a);
+                printf("\nPré-ordem: ");
+                ImprimePreOrdem(a);
+                printf("\n");
                 break;
             case 2:
-                printf("PÃ³s-ordem: ");
-                ImprimePosOrdem(a);
+                printf("\nEm-ordem: ");
+                ImprimeEmOrdem(a);
+                printf("\n");
                 break;
             case 3:
+                printf("\nPós-ordem: ");
+                ImprimePosOrdem(a);
+                printf("\n");
                 break;
             case 4:
+            	printf("\nLargura: \n");
+            	ImprimirLargura(a);
+            	printf("\n");
+                break;
+            case 5:
+            	break;
+            case 6:
                 exit(0);
                 break;
             default:
-                printf("OpÃ§Ã£o invÃ¡lida, tente novamente.\n");
+                printf("Opção inválida, tente novamente.\n");
                 Pausa();
                 break;
         }
+        break;
     }
 
 }
 
 void Menu(arvore *a){
 
-    int opc = 0, info = 0;
-    char *nome_arquivo;
+    int opc = 0, info = 0, cheia = 0;
+    char nome_arquivo[20];
     FILE *arq;
 
-    while(opc != 5){
+    while(opc != 10){
 
-        printf("[0] - Ler uma Ã¡rvore de um arquivo.\n");
-        printf("[1] - Imprimir Ã¡rvore\n");
-        printf("[2] - Verificar se um elemento existe na Ã¡rvore\n");
-        printf("[3] - Contar o nÃºmero de um elemento na Ã¡rvore.\n");
-        printf("[4] - Imprimir os nÃ³s folhas da Ã¡rvore\n");
-        printf("[5] - Sair.\n\n");
+		printf("\n");
+        printf("[1] - Ler uma árvore de um arquivo.\n");
+        printf("[2] - Imprimir árvore.\n");
+        printf("[3] - Verificar se um elemento existe na árvore.\n");
+        printf("[4] - Contar o número de elementos na árvore.\n");
+        printf("[5] - Imprimir os nós folhas da árvore.\n");
+        printf("[6] - Verificar se uma árvore está balanceada.\n");
+        printf("[7] - Verificar se uma árvore é cheia.\n");
+        printf("[8] - Imprimir o nível de um nó.\n");
+        printf("[9] - Sair.\n\n");
+		printf("Opção: ");
+		scanf("%d", &opc);
+		printf("\n");        
 
         switch(opc){
 
-            case 0:
+            case 1:
 
                 printf("Digite o nome do arquivo: ");
-                scanf("%s", nome_arquivo);
+                scanf("%s", &nome_arquivo);
                 arq = fopen(nome_arquivo, "rt");
-                a = LerArvore(arq);
+                a = LerArvore(a,arq);
                 fclose(arq);
                 printf("Arquivo lido.\n");
                 Pausa();
                 break;
 
-            case 1:
+            case 2:
 
                 MenuDeImpressao(a);
                 break;
 
-            case 2:
+            case 3:
 
                 printf("Digite o valor a ser procurado: ");
                 scanf("%d", &info);
                 if(Existe(a, info))
-                    printf("Existe!\n");
+                    printf("\nExiste!\n");
                 else
-                    printf("NÃ£o existe!\n");
-                Pausa();
-                break;
-
-            case 3:
-
-                printf("NÃºmero de elementos na Ã¡rvore: %d\n", Contador(a));
-                Pausa();
+                    printf("\nNão existe!\n");
+                //Pausa();
                 break;
 
             case 4:
-                printf("NÃ³s folhas: ");
-                ImprimirNoFolha(a);
-                Pausa();
+
+                printf("Número de elementos na árvore: %d\n", Contador(a));
+                //Pausa();
                 break;
 
             case 5:
+                printf("Nós folhas: ");
+                ImprimirNoFolha(a);
+                printf("\n");
+                //Pausa();
+                break;
+                
+            case 6:
+            	break;
+            	
+            case 7:
+            	cheia=ArvoreCheia(a);
+            	if(cheia==1){
+            		printf("A árvore é cheia.\n");
+				}else{
+					printf("A árvore não é cheia.\n");
+				}
+				//Pausa();
+            	break;
+            	
+            case 8:
+            	break;
+
+            case 9:
                 exit(0);
                 break;
 
             default:
-                printf("OpÃ§Ã£o invÃ¡lida, digite novamente\n");
+                printf("Opção inválida, digite novamente\n");
                 break;
 
         }
@@ -261,7 +366,6 @@ void Menu(arvore *a){
 
 
 //
-
 
 
 arvore *DestruirArvore(arvore *a){
@@ -278,18 +382,11 @@ arvore *DestruirArvore(arvore *a){
 
 int main(){
 
+	setlocale(LC_ALL, "Portuguese");
     arvore *a = NULL;
     FILE *arq;
 
-    /*arq = fopen("arquivo.txt", "rt");*/
-    /*a = LerArvore(arq);*/
-
-    /*ImprimePreOrdem(a);*/
-
-    /*fclose(arq);*/
-
     Menu(a);
-
 
     a = DestruirArvore(a);
 
