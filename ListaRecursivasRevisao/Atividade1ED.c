@@ -92,6 +92,21 @@ int Contador(Lista *l, int x){
 	}
 }
 
+int NivelNo(Lista *l, int num, int nivel){
+  if (l != NULL) {
+    if (l->info == num) {
+      return nivel;
+    }
+    else {
+      nivel++;
+      NivelNo(l->prox, num, nivel);
+    }
+  }
+  else {
+    return -1;
+  }
+}
+
 void ImprimirLista(Lista *l){
 	
 	if(l!=NULL){
@@ -124,7 +139,8 @@ void Menu(Lista *l){
 		printf("[3] - Contar o numero de ocorrencias de um elemento.\n");
 		printf("[4] - Remover um elemento.\n");
 		printf("[5] - Imprimir lista.\n");
-		printf("[6] - Sair.\n");
+    		printf("[6] - Imprimir o nivel de um no.\n");
+		printf("[7] - Sair.\n");
 		printf("\n");
 		printf("Opcao: ");
 		scanf("%d", &x);
@@ -135,12 +151,12 @@ void Menu(Lista *l){
 				printf("\nDigite o elemento que deseja incluir: ");
 				scanf("%d", &y);
 				l = InserirFinal(l,y);
-                printf("Inserindo...\n");
-                Pausa();
+                		printf("Inserindo...\n");
+                		Pausa();
 				break;
 				
 			case 2:
-                Pausa();
+                		Pausa();
 				printf("\nSoma dos elementos: %d\n", SomaLista(l));
 				break;
 				
@@ -149,10 +165,10 @@ void Menu(Lista *l){
 				scanf("%d", &y);
 				if(l==NULL){
 					printf("\nLista vazia...\n");
-                    Pausa();
+                    			Pausa();
 				}
 				else{
-                    Pausa();
+                    			Pausa();
 					printf("\nNumero de ocorrencias: %d\n", Contador(l,y));
 				}
 				break;
@@ -160,14 +176,14 @@ void Menu(Lista *l){
 			case 4:
 				if(l==NULL){
 					printf("\nLista vazia...\n");
-                    Pausa();
+                   			Pausa();
 				}
 				else{
 					printf("\nQual elemento deseja remover? ");
 					scanf("%d", &y);
 					l=RemoveElemento(l,y);
-                    printf("Removendo...\n");
-                    Pausa();
+					printf("Removendo...\n");
+					Pausa();
 				}
 				break;
 				
@@ -175,22 +191,31 @@ void Menu(Lista *l){
 				printf("\n");
 				if(l==NULL){
 					printf("Lista vazia...\n");
-                    Pausa();
+                    			Pausa();
 				}
 				else{
-                    Pausa();
+                    			Pausa();
 					ImprimirLista(l);
 					printf("\n");
 				}
 				break;
-            case 6:
-                printf("Saindo...\n");
-                Pausa();
-                break;
-            default:
-                printf("Opção inválida, digite novamente.\n");
-                Pausa();
-                break;
+				
+			case 6:
+				printf("\nInsira o valor do No qual deseja saber o nivel:\n");
+				scanf("%d", &y);
+				printf("\nNivel do no %d: %d", y, NivelNo(l, y, 0));
+				Pausa();
+				break;			
+				
+            		case 7:
+				printf("Saindo...\n");
+				Pausa();
+				break;
+				
+            		default:
+				printf("Opção inválida, digite novamente.\n");
+				Pausa();
+				break;
 		}
 	}
 }
