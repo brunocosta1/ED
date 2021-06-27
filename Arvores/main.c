@@ -13,7 +13,7 @@ typedef struct arvore{
 
 }arvore;
 
-// Código para verificar qual sistema operacional está rodando.
+// CÃ³digo para verificar qual sistema operacional estÃ¡ rodando.
 
 #ifdef __unix__
     #include <unistd.h>
@@ -23,7 +23,7 @@ typedef struct arvore{
     #include <windows.h>
 #endif
 
-// Função para deixar o menu mais dinâmico.
+// FunÃ§Ã£o para deixar o menu mais dinÃ¢mico.
 
 void Pausa(){
 
@@ -49,7 +49,7 @@ arvore *CriaElemento(int info){
     return nova;
 
 }
-// Função para ler árvore a partir de um arquivo
+// FunÃ§Ã£o para ler Ã¡rvore a partir de um arquivo
 
 arvore *LerArvore(arvore *a, FILE *arq){
 
@@ -72,7 +72,7 @@ arvore *LerArvore(arvore *a, FILE *arq){
     }
 }
 
-// Função para contar o número de elementos na árvore
+// FunÃ§Ã£o para contar o nÃºmero de elementos na Ã¡rvore
 
 int Contador(arvore *a){
 
@@ -82,7 +82,7 @@ int Contador(arvore *a){
         return 0;
 }
 
-// Função para verificar se um elemento existe na árvore
+// FunÃ§Ã£o para verificar se um elemento existe na Ã¡rvore
 
 int Existe(arvore *a, int info){
 
@@ -96,11 +96,10 @@ int Existe(arvore *a, int info){
             return 1;
         else
             return 0;
-
     }
 }
 
-//Função para contar a altura da árvore
+//FunÃ§Ã£o para contar a altura da Ã¡rvore
 
 int Altura(arvore *a){
 
@@ -152,7 +151,7 @@ int ArvoreBalanceada(arvore *a){
 
 
 void ImprimirNivel(arvore *a, int cont, int nivel){
-	
+
 	if(a!=NULL){
 		if(cont==nivel){
 			printf("%d ", a->info);
@@ -165,7 +164,7 @@ void ImprimirNivel(arvore *a, int cont, int nivel){
 }
 
 
-// Funções de impressão da árvore
+// FunÃ§Ãµes de impressÃ£o da Ã¡rvore
 
 void ImprimePreOrdem(arvore *a){
 
@@ -222,7 +221,26 @@ void ImprimirLargura(arvore *a){
 	}
 }
 
-//Função que verifica se a árvore é cheia
+//Imprimir nivel de um no
+int NivelNo(arvore *a, int num, int nivel) {
+
+  if(a == NULL) {
+      printf("Arvore vazia!\n");
+  }
+  else {
+    if(a->info == num) {
+        printf("\nNivel do no %d: %d\n", num, nivel);
+    }
+    if(a->esq != NULL) {
+        NivelNo(a->esq, num, nivel + 1);
+    }
+    if(a->dir != NULL) {
+        NivelNo(a->dir, num, nivel + 1);
+    }
+  }
+}
+
+//FunÃ§Ã£o que verifica se a Ã¡rvore Ã© cheia
 
 int ArvoreCheia(arvore *a){
 
@@ -241,28 +259,28 @@ int ArvoreCheia(arvore *a){
 	}
 }
 
-// Funções do menu
+// FunÃ§Ãµes do menu
 
 void MenuDeImpressao(arvore *a){
 
     int opc = 0;
-    
+
     while(opc != 6){
 
-        printf("\nDigite a forma de impressão: \n\n");
-        printf("[1] - Pré-ordem\n");
+        printf("\nDigite a forma de impressao: \n\n");
+        printf("[1] - Pre-ordem\n");
         printf("[2] - Em-ordem\n");
-        printf("[3] - Pós-ordem\n");
+        printf("[3] - Pos-ordem\n");
         printf("[4] - Largura\n");
         printf("[5] - Voltar\n");
         printf("[6] - Sair\n\n");
-        printf("Opção: ");
+        printf("Opcao: ");
         scanf("%d", &opc);
 
         switch(opc){
 
             case 1:
-                printf("\nPré-ordem: ");
+                printf("\nPre-ordem: ");
                 ImprimePreOrdem(a);
                 printf("\n");
                 break;
@@ -272,7 +290,7 @@ void MenuDeImpressao(arvore *a){
                 printf("\n");
                 break;
             case 3:
-                printf("\nPós-ordem: ");
+                printf("\nPos-ordem: ");
                 ImprimePosOrdem(a);
                 printf("\n");
                 break;
@@ -287,7 +305,7 @@ void MenuDeImpressao(arvore *a){
                 exit(0);
                 break;
             default:
-                printf("Opção inválida, tente novamente.\n");
+                printf("Opcao invalida, tente novamente.\n");
                 Pausa();
                 break;
         }
@@ -298,25 +316,25 @@ void MenuDeImpressao(arvore *a){
 
 void Menu(arvore *a){
 
-    int opc = 0, info = 0, cheia = 0;
+    int opc = 0, info = 0, cheia = 0, nivel = 0;
     char nome_arquivo[20];
     FILE *arq;
 
     while(opc != 10){
 
 		printf("\n");
-        printf("[1] - Ler uma árvore de um arquivo.\n");
-        printf("[2] - Imprimir árvore.\n");
-        printf("[3] - Verificar se um elemento existe na árvore.\n");
-        printf("[4] - Contar o número de elementos na árvore.\n");
-        printf("[5] - Imprimir os nós folhas da árvore.\n");
-        printf("[6] - Verificar se uma árvore está balanceada.\n");
-        printf("[7] - Verificar se uma árvore é cheia.\n");
-        printf("[8] - Imprimir o nível de um nó.\n");
+        printf("[1] - Ler uma arvore de um arquivo.\n");
+        printf("[2] - Imprimir arvore.\n");
+        printf("[3] - Verificar se um elemento existe na arvore.\n");
+        printf("[4] - Contar o numero de elementos na arvore.\n");
+        printf("[5] - Imprimir os nos folhas da arvore.\n");
+        printf("[6] - Verificar se uma arvore esta balanceada.\n");
+        printf("[7] - Verificar se uma arvore e cheia.\n");
+        printf("[8] - Imprimir o nivel de um no.\n");
         printf("[9] - Sair.\n\n");
-		printf("Opção: ");
+		printf("Opcao: ");
 		scanf("%d", &opc);
-		printf("\n");        
+		printf("\n");
 
         switch(opc){
 
@@ -343,41 +361,48 @@ void Menu(arvore *a){
                 if(Existe(a, info))
                     printf("\nExiste!\n");
                 else
-                    printf("\nNão existe!\n");
+                    printf("\nNÃ£o existe!\n");
                 //Pausa();
                 break;
 
             case 4:
 
-                printf("Número de elementos na árvore: %d\n", Contador(a));
+                printf("Numero de elementos na arvore: %d\n", Contador(a));
                 //Pausa();
                 break;
 
             case 5:
-                printf("Nós folhas: ");
+                printf("Nos folhas: ");
                 ImprimirNoFolha(a);
                 printf("\n");
                 //Pausa();
                 break;
-                
+
             case 6:
                 if(ArvoreBalanceada(a))
-                    printf("Árvore balanceada!\n");
+                    printf("Arvore balanceada!\n");
                 else
-                    printf("Árvore não balanceada!\n");
+                    printf("Arvore nao balanceada!\n");
             	break;
-            	
+
             case 7:
             	cheia=ArvoreCheia(a);
             	if(cheia==1){
-            		printf("A árvore é cheia.\n");
+            		printf("A arvore e cheia.\n");
 				}else{
-					printf("A árvore não é cheia.\n");
+					printf("A arvore nao e cheia.\n");
 				}
 				//Pausa();
             	break;
-            	
+
             case 8:
+      				printf("Insira o valor do No qual deseja saber o nivel:\n");
+      				scanf("%d", &info);
+              if(Existe(a, info)) {
+                  NivelNo(a, info, 0);
+              }
+              else {printf("\nValor invalido!\n");}
+      				//Pausa();
             	break;
 
             case 9:
@@ -385,7 +410,7 @@ void Menu(arvore *a){
                 break;
 
             default:
-                printf("Opção inválida, digite novamente\n");
+                printf("OpÃ§ao invalida, digite novamente\n");
                 break;
 
         }
