@@ -122,7 +122,9 @@ int Altura(arvore *a){
 
 int ArvoreBalanceada(arvore *a){
 
-    if(a != NULL){
+    if(a==NULL)
+    	return 1;
+    else{
 
         int alturaDireita, alturaEsquerda;
 
@@ -132,20 +134,17 @@ int ArvoreBalanceada(arvore *a){
         if(abs(alturaDireita - alturaEsquerda) > 1)
             return 0;
         else{
-
-            int temp1 = ArvoreBalanceada(a->dir), temp2 = ArvoreBalanceada(a->esq);
+        
+			int temp1 = ArvoreBalanceada(a->dir), temp2 = ArvoreBalanceada(a->esq);
 
             if(temp1 && temp2)
                 return 1;
             else
                 return 0;
-
         }
-
-
     }
-
 }
+
 
 //Imprimir os elementos de um determinado nivel da arvore
 
@@ -396,13 +395,15 @@ void Menu(arvore *a){
             	break;
 
             case 8:
-      				printf("Insira o valor do No qual deseja saber o nivel:\n");
-      				scanf("%d", &info);
-              if(Existe(a, info)) {
-                  NivelNo(a, info, 0);
-              }
-              else {printf("\nValor invalido!\n");}
-      				//Pausa();
+      			printf("Insira o valor do No qual deseja saber o nivel:\n");
+      			scanf("%d", &info);
+              		if(Existe(a, info)) {
+                  		NivelNo(a, info, 0);
+              		}
+              		else {
+					  printf("\nValor invalido!\n");
+					  }
+      			//Pausa();
             	break;
 
             case 9:
@@ -415,13 +416,8 @@ void Menu(arvore *a){
 
         }
 
-
     }
 }
-
-
-
-//
 
 
 arvore *DestruirArvore(arvore *a){
