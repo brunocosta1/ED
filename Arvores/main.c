@@ -126,8 +126,8 @@ int ArvoreBalanceada(arvore *a){
 
         int alturaDireita, alturaEsquerda;
 
-        alturaEsquerda = Altura(a->esq);
-        alturaDireita = Altura(a->dir);
+        alturaEsquerda = Altura(a->esq) + 1;
+        alturaDireita = Altura(a->dir) + 1;
 
         if(abs(alturaDireita - alturaEsquerda) > 1)
             return 0;
@@ -135,15 +135,15 @@ int ArvoreBalanceada(arvore *a){
 
             int temp1 = ArvoreBalanceada(a->dir), temp2 = ArvoreBalanceada(a->esq);
 
-            if(temp1 && temp2)
+            if(temp1 == 1 && temp2 == 1)
                 return 1;
             else
                 return 0;
 
         }
-
-
     }
+    else
+        return 1;
 
 }
 
@@ -222,7 +222,7 @@ void ImprimirLargura(arvore *a){
 }
 
 //Imprimir nivel de um no
-int NivelNo(arvore *a, int num, int nivel) {
+void NivelNo(arvore *a, int num, int nivel) {
 
   if(a == NULL) {
       printf("Arvore vazia!\n");
@@ -318,7 +318,7 @@ void Menu(arvore *a){
 
     int opc = 0, info = 0, cheia = 0, nivel = 0;
     char nome_arquivo[20];
-    FILE *arq;
+    FILE *arq = NULL;
 
     while(opc != 10){
 
@@ -340,12 +340,24 @@ void Menu(arvore *a){
 
             case 1:
 
-                printf("Digite o nome do arquivo: ");
-                scanf("%s", nome_arquivo);
-                arq = fopen(nome_arquivo, "rt");
-                a = LerArvore(a,arq);
-                fclose(arq);
-                printf("Arquivo lido.\n");
+                while(arq == NULL){
+
+                    printf("Digite o nome do arquivo: ");
+                    scanf("%s", nome_arquivo);
+                    arq = fopen(nome_arquivo, "rt");
+
+                    if(arq != NULL){
+
+                        a = LerArvore(a,arq);
+                        fclose(arq);
+                        printf("Arquivo lido.\n");
+
+                    }
+                    else{
+                        printf("Arquivo não foi lido, tente novamente\n");
+                        Pausa();
+                    }
+                }
                 Pausa();
                 break;
 
