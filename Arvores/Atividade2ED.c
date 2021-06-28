@@ -143,12 +143,6 @@ int ArvoreBalanceada(arvore *a){
                 return 0;
         }
     }
-<<<<<<< HEAD:Arvores/main.c
-    else
-        return 1;
-
-=======
->>>>>>> f263d1d33649043156454ce818bc59f570f0d658:Arvores/Atividade2ED.c
 }
 
 
