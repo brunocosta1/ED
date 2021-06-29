@@ -371,9 +371,9 @@ void Menu(arvore *a){
 
             case 3:
 
-                Pausa();
                 printf("Digite o valor a ser procurado: ");
                 scanf("%d", &info);
+                Pausa();
                 if(Existe(a, info))
                     printf("\nExiste!\n");
                 else
