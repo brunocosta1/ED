@@ -279,21 +279,25 @@ void MenuDeImpressao(arvore *a){
         switch(opc){
 
             case 1:
+                Pausa();
                 printf("\nPre-ordem: ");
                 ImprimePreOrdem(a);
                 printf("\n");
                 break;
             case 2:
+                Pausa();
                 printf("\nEm-ordem: ");
                 ImprimeEmOrdem(a);
                 printf("\n");
                 break;
             case 3:
+                Pausa();
                 printf("\nPos-ordem: ");
                 ImprimePosOrdem(a);
                 printf("\n");
                 break;
             case 4:
+                Pausa();
             	printf("\nLargura: \n");
             	ImprimirLargura(a);
             	printf("\n");
@@ -304,8 +308,8 @@ void MenuDeImpressao(arvore *a){
                 exit(0);
                 break;
             default:
-                printf("Opcao invalida, tente novamente.\n");
                 Pausa();
+                printf("Opcao invalida, tente novamente.\n");
                 break;
         }
         break;
@@ -339,6 +343,7 @@ void Menu(arvore *a){
 
             case 1:
 
+                Pausa();
                 while(arq == NULL){
 
                     printf("Digite o nome do arquivo: ");
@@ -354,14 +359,13 @@ void Menu(arvore *a){
                     }
                     else{
                         printf("Arquivo não foi lido, tente novamente\n");
-                        Pausa();
                     }
                 }
-                Pausa();
                 break;
 
             case 2:
 
+                Pausa();
                 MenuDeImpressao(a);
                 break;
 
@@ -378,18 +382,19 @@ void Menu(arvore *a){
 
             case 4:
 
+                Pausa();
                 printf("Numero de elementos na arvore: %d\n", Contador(a));
-                //Pausa();
                 break;
 
             case 5:
+                Pausa();
                 printf("Nos folhas: ");
                 ImprimirNoFolha(a);
                 printf("\n");
-                //Pausa();
                 break;
 
             case 6:
+                Pausa();
                 if(ArvoreBalanceada(a))
                     printf("Arvore balanceada!\n");
                 else
@@ -398,24 +403,26 @@ void Menu(arvore *a){
 
             case 7:
             	cheia=ArvoreCheia(a);
+				Pausa();
             	if(cheia==1){
             		printf("A arvore e cheia.\n");
 				}else{
 					printf("A arvore nao e cheia.\n");
 				}
-				//Pausa();
             	break;
 
             case 8:
       			printf("Insira o valor do No qual deseja saber o nivel:\n");
       			scanf("%d", &info);
-              		if(Existe(a, info)) {
-                  		NivelNo(a, info, 0);
-              		}
-              		else {
-					  printf("\nValor invalido!\n");
-					  }
-      			//Pausa();
+
+      			Pausa();
+
+                if(Existe(a, info)) {
+                    NivelNo(a, info, 0);
+                }else{
+                  printf("\nValor invalido!\n");
+                }
+
             	break;
 
             case 9:
@@ -424,6 +431,7 @@ void Menu(arvore *a){
 
             default:
                 printf("Opçao invalida, digite novamente\n");
+                Pausa();
                 break;
 
         }
