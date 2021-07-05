@@ -109,6 +109,19 @@ void ImprimirNivel(arvore *a, int cont, int nivel){
 		}
 	}
 }
+
+//Imprime as folhas menores que um valor X
+void ImprimirMenor(arvore *a, int x){
+  if (a != NULL) {
+    if (a->info < x) {
+      printf("%d", a->info);
+      ImprimirMenor(a->esq, x);
+      ImprimirMenor(a->dir, x);
+    }
+    else {ImprimirMenor(a->esq, x);}
+  }
+}
+
 // Funções de impressão da árvore
 
 void ImprimePreOrdem(arvore *a){
