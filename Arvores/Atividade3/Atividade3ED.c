@@ -121,16 +121,14 @@ void ImprimirMenor(arvore *a, int x){
 	
 	if (a != NULL) {
 		if (a->info < x) {
-    		if(a->esq==NULL && a->dir==NULL){
-    			printf("%d ", a->info);
-			}
+			printf("%d ", a->info);
 			ImprimirMenor(a->esq, x);
-    	  	ImprimirMenor(a->dir, x);
-    	}
-    else {
-		ImprimirMenor(a->esq, x);
-	}
-  }
+			ImprimirMenor(a->dir, x);
+    		}
+    		else {
+			ImprimirMenor(a->esq, x);
+		}
+  	}
 }
 
 
