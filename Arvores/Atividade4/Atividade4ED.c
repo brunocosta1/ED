@@ -132,7 +132,6 @@ void ImprimirNivel(AVL *a, int cont, int nivel){
 	}
 }
 
-
 //Imprime as folhas menores que um valor X
 
 void ImprimirMenor(AVL *a, int x){
@@ -195,6 +194,82 @@ void ImprimirLargura(AVL *a){
 		}
 	}
 }
+
+
+
+
+//Debug
+//Imprimir árvore para checar funções (código utilizado de https://stackoverflow.com/questions/801740/c-how-to-draw-a-binary-a-to-the-console)
+int ImprimirNivelDebug(AVL *a, int is_esq, int espaco, int altura, char s[20][255])
+{
+    char b[20];
+    int largura = 5;
+
+    if (!a) return 0;
+
+    sprintf(b, "(%03d)", a->info);
+
+    int esq = ImprimirNivelDebug(a->esq, 1, espaco, altura + 1, s);
+    int dir = ImprimirNivelDebug(a->dir, 0, espaco + esq + largura, altura + 1, s);
+
+#ifdef COMPACT
+    for (int i = 0; i < largura; i++)
+        s[altura][espaco + esq + i] = b[i];
+
+    if (altura && is_esq) {
+
+        for (int i = 0; i < largura + dir; i++)
+            s[altura - 1][espaco + esq + largura/2 + i] = '-';
+
+        s[altura - 1][espaco + esq + largura/2] = '.';
+
+    } else if (altura && !is_esq) {
+
+        for (int i = 0; i < esq + largura; i++)
+            s[altura - 1][espaco - largura/2 + i] = '-';
+
+        s[altura - 1][espaco + esq + largura/2] = '.';
+    }
+#else
+    for (int i = 0; i < largura; i++)
+        s[2 * altura][espaco + esq + i] = b[i];
+
+    if (altura && is_esq) {
+
+        for (int i = 0; i < largura + dir; i++)
+            s[2 * altura - 1][espaco + esq + largura/2 + i] = '-';
+
+        s[2 * altura - 1][espaco + esq + largura/2] = '+';
+        s[2 * altura - 1][espaco + esq + largura + dir + largura/2] = '+';
+
+    } else if (altura && !is_esq) {
+
+        for (int i = 0; i < esq + largura; i++)
+            s[2 * altura - 1][espaco - largura/2 + i] = '-';
+
+        s[2 * altura - 1][espaco + esq + largura/2] = '+';
+        s[2 * altura - 1][espaco - largura/2 - 1] = '+';
+    }
+#endif
+
+    return esq + largura + dir;
+}
+
+void ImprimirDebug(AVL *a)
+{
+    char s[20][255];
+    for (int i = 0; i < 20; i++)
+        sprintf(s[i], "%80s", " ");
+
+    ImprimirNivelDebug(a, 0, 0, 0, s);
+
+    for (int i = 0; i < 20; i++)
+        printf("%s\n", s[i]);
+}
+//Fim do codigo de impressão
+
+
+
 
 
 // Funcao que verifica se existe um elemento x na AVL ABB
@@ -457,7 +532,8 @@ void Menu(AVL *a){
         printf("[5] - Imprimir as folhas menores que um valor x.\n");
         printf("[6] - Inserir um no x na AVL.\n");
         printf("[7] - Remover um no x da AVL.\n");
-        printf("[8] - Sair.\n\n");
+        printf("[8] - Debug (imprimir arvore para checar nos, folhas e suas posicoes.)\n");
+        printf("[9] - Sair.\n\n");
 		printf("Opcao: ");
 		scanf("%d", &opc);
 		printf("\n");
@@ -534,13 +610,21 @@ void Menu(AVL *a){
             	break;
 
             case 7:
-                printf("Digite o no que deseja remover: ");
+              printf("Digite o no que deseja remover: ");
             	scanf("%d", &info);
             	a=Remover(a,info);
                 limpa_tela();
             	break;
 
             case 8:
+              limpa_tela();
+              if (a != NULL) {
+                ImprimirDebug(a);
+              }
+              else {printf("Leia um arquivo antes.\n");}
+              break;
+
+            case 9:
                 exit(0);
                 break;
 
@@ -581,5 +665,4 @@ int main(){
     return 0;
 
 }
-
 
