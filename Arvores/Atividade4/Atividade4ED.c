@@ -14,7 +14,7 @@ typedef struct avl{
 }AVL;
 
 
-// Código para verificar qual sistema operacional está rodando.
+// CÃ³digo para verificar qual sistema operacional estÃ¡ rodando.
 
 #ifdef __unix__
     #include <unistd.h>
@@ -24,7 +24,7 @@ typedef struct avl{
     #include <windows.h>
 #endif
 
-// Função para deixar o menu mais dinâmico.
+// FunÃ§Ã£o para deixar o menu mais dinÃ¢mico.
 
 void limpa_tela(){
 
@@ -38,8 +38,29 @@ void limpa_tela(){
 
 }
 
+//Retorna a Altura de uma Ã¡rvore ou sub-Ã¡rvore
 
-//Função para criar um elemento da árvore
+int Altura(AVL *a){
+
+	if(a==NULL){
+		return 0;
+	}
+	else{
+		int he, hd;
+		he=Altura(a->esq);
+		hd=Altura(a->dir);
+
+		if(he>hd){
+			return he + 1;
+		}
+		else{
+			return hd + 1;
+		}
+	}
+}
+
+
+//Função para criar um elemento da Árvore
 
 AVL *CriaElemento(int info){
 
@@ -56,12 +77,12 @@ AVL *CriaElemento(int info){
 // Funcoes para ler AVL a partir de um arquivo
 
 void AjustarFB(AVL *a){
-	
+
 	if(a!=NULL){
 		int he=Altura(a->esq);
 		int hd=Altura(a->dir);
 		a->FB=hd-he;
-		
+
 		AjustarFB(a->esq);
 		AjustarFB(a->dir);
 	}
@@ -89,31 +110,10 @@ AVL *LerArvore(AVL *a, FILE *arq){
 }
 
 AVL *LerAVL(AVL *a, FILE *arq){
-	
+
 	a=LerArvore(a,arq);
 	AjustarFB(a);
 	return a;
-}
-
-//Retorna a Altura de uma árvore ou sub-árvore
-
-int Altura(AVL *a){
-
-	if(a==NULL){
-		return 0;
-	}
-	else{
-		int he, hd;
-		he=Altura(a->esq);
-		hd=Altura(a->dir);
-
-		if(he>hd){
-			return he + 1;
-		}
-		else{
-			return hd + 1;
-		}
-	}
 }
 
 
@@ -136,7 +136,7 @@ void ImprimirNivel(AVL *a, int cont, int nivel){
 //Imprime as folhas menores que um valor X
 
 void ImprimirMenor(AVL *a, int x){
-	
+
 	if (a != NULL) {
 		if (a->info < x) {
     		if(a->esq==NULL && a->dir==NULL){
@@ -152,7 +152,7 @@ void ImprimirMenor(AVL *a, int x){
 }
 
 
-// Funções de impressão da árvore
+// FunÃ§Ãµes de impressÃ£o da Ã¡rvore
 
 void ImprimePreOrdem(AVL *a){
 
@@ -200,7 +200,7 @@ void ImprimirLargura(AVL *a){
 // Funcao que verifica se existe um elemento x na AVL ABB
 
 int Existir(AVL *a, int x){
-	
+
 	if(a==NULL)
 		return 0;
 	else if(x==a->info)
@@ -209,14 +209,14 @@ int Existir(AVL *a, int x){
 		return Existir(a->esq,x);
 	else
 		return Existir(a->dir,x);
-	
+
 }
 
 
 //Funcao para imprimir o nivel do no
 
 int NivelNo(AVL *a, int x){
-	
+
 	if(x==a->info){
 		return 0;
 	}
@@ -231,13 +231,53 @@ int NivelNo(AVL *a, int x){
 }
 
 
-// Rota��o a esquerda geral
+//Rotação a esquerda simples
+
+AVL *RotacaoEsqSimples(AVL *p){
+
+	AVL *b = p->dir;
+	p->dir = b->esq;
+	b->esq = p;
+	return b;
+}
+
+//Rotação a direita simples
+
+AVL *RotacaoDirSimples(AVL *p){
+
+	AVL *b = p->esq;
+	p->esq = b->dir;
+	b->dir = p;
+	return b;
+}
+
+
+//Rotação a esquerda dupla
+
+AVL *RotacaoEsqDupla(AVL *p){
+
+	p->dir = RotacaoDirSimples(p->dir);
+	p = RotacaoEsqSimples(p);
+	return p;
+}
+
+//Rotação a direita dupla
+
+AVL *RotacaoDirDupla(AVL *p){
+
+	p->esq = RotacaoEsqSimples(p->esq);
+	p = RotacaoDirSimples(p);
+	return p;
+}
+
+
+// Rotação a esquerda geral
 
 AVL *RotacaoEsq(AVL *p){
 
 	int he = Altura(p->esq);
 	int hd = Altura(p->dir);
-	
+
 	if (fabs(hd - he) > 1){
 		AVL *b = p->dir;
 		he = Altura(b->esq);
@@ -248,140 +288,100 @@ AVL *RotacaoEsq(AVL *p){
 	else
 		p = RotacaoEsqSimples(p);
 	}
-	
+
 	return p;
 }
 
-//Rota��o a esquerda simples 
-
-AVL *RotacaoEsqSimples(AVL *p){ 
-
-	AVL *b = p->dir; 
-	p->dir = b->esq; 
-	b->esq = p; 
-	return b; 
-}
-
- 
-//Rota��o a esquerda dupla 
-
-AVL *RotacaoEsqDupla(AVL *p){ 
-
-	p->dir = RotacaoDirSimples(p->dir); 
-	p = RotacaoEsqSimples(p); 
-	return p; 
-} 
 
 
-//Rota��o a direita geral 
+//Rotação a direita geral
 
-AVL *RotacaoDir(AVL *p){ 
+AVL *RotacaoDir(AVL *p){
 
-	int he = Altura(p->esq); 
-	int hd = Altura(p->dir); 
-	
-	if (fabs(hd - he) > 1){ 
-		AVL *b = p->esq; 
-		he = Altura(b->esq); 
-		hd = Altura(b->dir); 
-		if (hd > he) 
-			p = RotacaoDirDupla(p); 
-		else 
-			p = RotacaoDirSimples(p); 
-	
-	} 
-	return p; 
-} 
+	int he = Altura(p->esq);
+	int hd = Altura(p->dir);
 
+	if (fabs(hd - he) > 1){
+		AVL *b = p->esq;
+		he = Altura(b->esq);
+		hd = Altura(b->dir);
+		if (hd > he)
+			p = RotacaoDirDupla(p);
+		else
+			p = RotacaoDirSimples(p);
 
-//Rota��o a direita simples 
-
-AVL *RotacaoDirSimples(AVL *p){ 
-
-	AVL *b = p->esq; 
-	p->esq = b->dir; 
-	b->dir = p; 
-	return b; 
-} 
-
-
-//Rota��o a direita dupla 
-
-AVL *RotacaoDirDupla(AVL *p){ 
-
-	p->esq = RotacaoEsqSimples(p->esq); 
-	p = RotacaoDirSimples(p); 
-	return p; 
+	}
+	return p;
 }
 
 
 //Inserir na AVL AVL
 
-AVL *Inserir(AVL *a, int x){ 
+AVL *Inserir(AVL *a, int x){
 
-	if(a == NULL){ 
-		a = (AVL*)malloc(sizeof(AVL)); 
-		a->info = x; 
-		a->esq = NULL; 
+	if(a == NULL){
+		a = (AVL*)malloc(sizeof(AVL));
+		a->info = x;
+		a->esq = NULL;
 		a->dir = NULL;
-	} 
-	else{ 
-		if (x <= a->info){ 
-			a->esq = Inserir(a->esq,x); 
-			a = RotacaoDir(a); 
-		} 
-		else{ 
-			a->dir = Inserir(a->dir,x); 
-			a = RotacaoEsq(a); 
-		} 
-	} 
-	
-	return a; 
-} 
+	}
+	else{
+		if (x <= a->info){
+			a->esq = Inserir(a->esq,x);
+			a = RotacaoDir(a);
+		}
+		else{
+			a->dir = Inserir(a->dir,x);
+			a = RotacaoEsq(a);
+		}
+	}
+
+	return a;
+}
 
 
 //Remover na AVL AVL
 
-AVL *Remover(AVL *a, int x){ 
+AVL *Remover(AVL *a, int x){
 
-	if(a != NULL){ 
-		if(a->info == x){  
-			if(a->esq == NULL && a->dir == NULL){ 
-				free(a); 
-				return NULL; 
+	if(a != NULL){
+		if(a->info == x){
+			if(a->esq == NULL && a->dir == NULL){
+				free(a);
+				return NULL;
 			}
-			
-		else if(a->esq == NULL || a->dir == NULL){ 
-			AVL *aux;  if(a->esq == NULL) 
-			aux = a->dir; 
-			else 
-				aux = a->esq; 
-			free(a); 
-			return aux; 
-			}  
-		else{ 
-			AVL *maiorEsq = a->esq; 
-			while (maiorEsq->dir != NULL) 
-				maiorEsq = maiorEsq->dir; 
-			a->info = maiorEsq->info; 
-			a->esq = Remover(a->esq,a->info); 
-			a = RotacaoEsq(a); 
-		} 
-	} 
-	else if (x < a->info){ 
-		a->esq = Remover(a->esq, x); 
-		a = RotacaoEsq(a); 
-	} 
-		else{ 
-		a->dir = Remover(a->dir, x); 
-		a = RotacaoDir(a); 
-		} 
-	} 
 
-	return a; 
-} 
+		else if(a->esq == NULL || a->dir == NULL){
+			AVL *aux;  if(a->esq == NULL)
+			aux = a->dir;
+			else
+				aux = a->esq;
+			free(a);
+			return aux;
+			}
+		else{
+			AVL *maiorEsq = a->esq;
+			while (maiorEsq->dir != NULL)
+				maiorEsq = maiorEsq->dir;
+			a->info = maiorEsq->info;
+			a->esq = Remover(a->esq,a->info);
+			a = RotacaoEsq(a);
+		}
+	}
+	else if (x < a->info){
+		a->esq = Remover(a->esq, x);
+		a = RotacaoEsq(a);
+	}
+		else{
+		a->dir = Remover(a->dir, x);
+		a = RotacaoDir(a);
+		}
+	}
 
- 
+	return a;
+}
+
+
 // Funcoes do menu
 
 void MenuDeImpressao(AVL *a){
@@ -520,7 +520,7 @@ void Menu(AVL *a){
             case 5:
 				printf("Digite o valor de x: ");
             	scanf("%d", &info);
-            	limpa_tela(); 
+            	limpa_tela();
             	printf("\nFolhas menores do que %d: ", info);
 				ImprimirMenor(a,info);
 				printf("\n");
@@ -537,7 +537,7 @@ void Menu(AVL *a){
                 printf("Digite o no que deseja remover: ");
             	scanf("%d", &info);
             	a=Remover(a,info);
-                limpa_tela(); 
+                limpa_tela();
             	break;
 
             case 8:
@@ -581,4 +581,5 @@ int main(){
     return 0;
 
 }
+
 
