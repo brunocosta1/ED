@@ -133,7 +133,7 @@ int Remover(int *heap){
 }
 
 
-main(){
+int main(){
 	
 	int N=0, x=0, y=0, i;
 	int heap[N];
