@@ -58,7 +58,7 @@ int indiceFilhoDir(int x){
 
 int indicePai(int x){
 	
-	int indice=(int)floor((x-1)/2);
+	int indice= (int)floor((x-1) / 2);
 	
 	if(x<=0 || x>= totalElementos){
 		return -1;
@@ -88,6 +88,7 @@ void AjustarSubindo(int *heap, int pos){
 
 void Inserir(int *heap, int x){
 	
+    heap = realloc(heap, (totalElementos+1) * sizeof(int));
 	heap[totalElementos]=x;
 	totalElementos++;
 	
@@ -136,10 +137,14 @@ int Remover(int *heap){
 int main(){
 	
 	int N=0, x=0, y=0, i;
-	int heap[N];
+
+
+	int *heap = (int*)malloc(sizeof(int));
+
+    N = 0;
 	int totalElementos=0;
 	
-	while(x!=4){
+	while(x!=4 && totalElementos <= N){
 		
 		printf("\n[1] - Inserir um elemento x na heap.\n");
 		printf("[2] - Remover.\n");
@@ -179,6 +184,8 @@ int main(){
 				
 		}
 	}
+
+    free(heap);
 	
 }
 
