@@ -47,15 +47,15 @@ void menu(char *nome_arq);
 
 int main(){
 
-    char nome_arq[10];
-    printf("Digite o nome do arquivo que deseja inicializar: ");
-    scanf("%s", nome_arq);
-    scanf("");
+    /*char nome_arq[10];*/
+    /*printf("Digite o nome do arquivo que deseja inicializar: ");*/
+    /*scanf("%s", nome_arq);*/
+    /*scanf("");*/
 
-    inicializa(nome_arq);
+    inicializa("registro");
     limpa_tela();
 
-    menu(nome_arq);
+    menu("registro");
 
     return 0;
 
@@ -77,6 +77,7 @@ void menu(char *nome_arq){
 
         printf("Opção: ");
         scanf("%d", &opc);
+        scanf("");
         printf("\n");
 
         switch(opc){
@@ -92,6 +93,7 @@ void menu(char *nome_arq){
 
                 printf("Digite o a matrícula do aluno: ");
                 scanf("%d", &aluno_temp.mat);
+                scanf("");
                 printf("\n");
 
                 inserir(nome_arq, aluno_temp);
@@ -101,8 +103,8 @@ void menu(char *nome_arq){
 
             case 1:
                 printf("Digite a matrícula: ");
+                scanf("");
                 scanf("%d", &mat_temp);
-                printf("\n");
 
                 imprimir(nome_arq, mat_temp);
 
@@ -151,12 +153,15 @@ void imprimir(char *nome_arq, int mat){
     registro a;
 
     fseek(arq, pos*sizeof(registro), SEEK_SET);
-    fread(&a, sizeof(registro), 1, arq);
 
+    if(fread(&a, sizeof(registro), 1, arq) == 1){
 
-    printf("Nome: %s\n", a.nome);
-    printf("Curso: %s\n", a.curso);
-    printf("Matrícula: %d\n", a.mat);
+        printf("Nome: %s\n", a.nome);
+        printf("Curso: %s\n", a.curso);
+        printf("Matrícula: %d\n", a.mat);
+
+    }
+
 
     fclose(arq);
 
@@ -170,13 +175,10 @@ void inserir(char *nome_arq, registro aluno){
 
     registro a;
 
-    strcpy(a.nome, aluno.nome);
-    strcpy(a.curso, aluno.curso);
-    a.mat = aluno.mat;
-    a.disponibilidade = 0;
+    aluno.disponibilidade = 0;
 
     fseek(arq, pos*sizeof(registro), SEEK_SET);
-    fwrite(&a, sizeof(registro), 1, arq);
+    fwrite(&aluno, sizeof(registro), 1, arq);
 
     fclose(arq);
 
@@ -184,8 +186,7 @@ void inserir(char *nome_arq, registro aluno){
 
 int acha_pos(char *nome_arq, int mat){
 
-    int resto = mat % 1000;
-    int pos = hash(resto);
+    int pos = hash(mat);
 
     registro a;
 
