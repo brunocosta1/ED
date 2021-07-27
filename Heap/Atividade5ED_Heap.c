@@ -144,7 +144,7 @@ int main(){
     N = 0;
 	int totalElementos=0;
 	
-	while(x!=4 && totalElementos <= N){
+	while(x!=4 ){
 		
 		printf("\n[1] - Inserir um elemento x na heap.\n");
 		printf("[2] - Remover.\n");
