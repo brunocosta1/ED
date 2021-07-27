@@ -44,6 +44,7 @@ void inserir(char *nome_arq, registro aluno);
 void imprimir(char *nome_arq, int mat);
 int acha_pos(char *nome_arq, int mat);
 void menu(char *nome_arq);
+void imprime_tabela(char *nome_arq);
 
 void menu(char *nome_arq){
 
@@ -96,6 +97,8 @@ void menu(char *nome_arq){
                 break;
 
             case 2:
+                limpa_tela();
+                imprime_tabela(nome_arq);
                 break;
 
             case 3:
@@ -207,6 +210,32 @@ int acha_pos(char *nome_arq, int mat){
 
 }
 
+void imprime_tabela(char *nome_arq){
+
+    FILE *arq = fopen(nome_arq, "rb");
+    registro a;
+
+
+    fseek(arq, 0*sizeof(registro), SEEK_SET);
+    
+
+    for(int i = 0; i < TAM; i++){
+
+        fseek(arq, i*sizeof(registro), SEEK_SET);
+
+        if(fread(&a, sizeof(registro), 1, arq) == 1){
+
+                printf("Posição: %d\t| Nome: %s\t| Curso %s\n", i, a.nome, a.curso);
+
+        }
+
+    }
+    printf("\n");
+
+    fclose(arq);
+
+}
+
 int main(){
 
     /*char nome_arq[10];
@@ -214,10 +243,10 @@ int main(){
     scanf("%s", nome_arq);
     scanf("");*/
 
-    inicializa("alunos.txt");
+    inicializa("alunos");
     limpa_tela();
 
-    menu("alunos.txt");
+    menu("alunos");
 
     return 0;
 
