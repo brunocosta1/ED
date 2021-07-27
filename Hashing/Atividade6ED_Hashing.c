@@ -93,7 +93,7 @@ void menu(char *nome_arq){
 
                 printf("Digite o a matrícula do aluno: ");
                 scanf("%d", &aluno_temp.mat);
-                scanf("");
+                scanf(""); // Limpa o buffer
                 printf("\n");
 
                 inserir(nome_arq, aluno_temp);
