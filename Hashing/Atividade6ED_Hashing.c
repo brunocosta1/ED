@@ -225,10 +225,10 @@ void imprime_tabela(char *nome_arq){
 
         if(fread(&a, sizeof(registro), 1, arq) == 1){
 
-            if(a.disponibilidade)
-                printf("Posição: %d\t| Nome: %s\t| Curso: %s\n", i, a.nome, a.curso);
-            else
+            if(a.disponibilidade == 1)
                 printf("Posição:  \t| Nome:  \t| Curso:  \n");
+            else
+                printf("Posição: %d\t| Nome: %s\t| Curso: %s\n", i, a.nome, a.curso);
 
 
 
