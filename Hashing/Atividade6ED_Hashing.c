@@ -45,22 +45,6 @@ void imprimir(char *nome_arq, int mat);
 int acha_pos(char *nome_arq, int mat);
 void menu(char *nome_arq);
 
-int main(){
-
-    /*char nome_arq[10];*/
-    /*printf("Digite o nome do arquivo que deseja inicializar: ");*/
-    /*scanf("%s", nome_arq);*/
-    /*scanf("");*/
-
-    inicializa("registro");
-    limpa_tela();
-
-    menu("registro");
-
-    return 0;
-
-}
-
 void menu(char *nome_arq){
 
     int opc = 0;
@@ -71,17 +55,17 @@ void menu(char *nome_arq){
     while(opc != 4){
 
         printf("[0] - Inserir novo aluno\n");
-        printf("[1] - Imprimir informações de um aluno\n");
-        printf("[2] - Imprimir a tabela de dispersão\n");
+        printf("[1] - Imprimir informacoes de um aluno\n");
+        printf("[2] - Imprimir a tabela de dispersao\n");
         printf("[3] - Sair\n\n");
 
-        printf("Opção: ");
+        printf("Opcao: ");
         scanf("%d", &opc);
         scanf("");
         printf("\n");
 
         switch(opc){
-            
+
             case 0:
                 printf("Digite o nome do aluno: ");
                 scanf("%s", aluno_temp.nome);
@@ -91,7 +75,7 @@ void menu(char *nome_arq){
                 scanf("%s", aluno_temp.curso);
                 printf("\n");
 
-                printf("Digite o a matrícula do aluno: ");
+                printf("Digite o a matricula do aluno: ");
                 scanf("%d", &aluno_temp.mat);
                 scanf(""); // Limpa o buffer
                 printf("\n");
@@ -102,7 +86,7 @@ void menu(char *nome_arq){
                 break;
 
             case 1:
-                printf("Digite a matrícula: ");
+                printf("Digite a matricula: ");
                 scanf("");
                 scanf("%d", &mat_temp);
 
@@ -114,6 +98,7 @@ void menu(char *nome_arq){
                 break;
 
             case 3:
+                exit(0);
                 break;
 
             default:
@@ -158,7 +143,7 @@ void imprimir(char *nome_arq, int mat){
 
         printf("Nome: %s\n", a.nome);
         printf("Curso: %s\n", a.curso);
-        printf("Matrícula: %d\n", a.mat);
+        printf("Matricula: %d\n", a.mat);
 
     }
 
@@ -175,7 +160,14 @@ void inserir(char *nome_arq, registro aluno){
 
     registro a;
 
-    aluno.disponibilidade = 0;
+    a.mat = aluno.mat;
+    for (size_t i = 0; i < 100; i++) {
+      a.nome[i] = aluno.nome[i];
+    }
+    for (size_t i = 0; i < 50; i++) {
+      a.curso[i] = aluno.curso[i];
+    }
+    a.disponibilidade = 0;
 
     fseek(arq, pos*sizeof(registro), SEEK_SET);
     fwrite(&aluno, sizeof(registro), 1, arq);
@@ -208,5 +200,20 @@ int acha_pos(char *nome_arq, int mat){
 
 }
 
+int main(){
+
+    /*char nome_arq[10];
+    printf("Digite o nome do arquivo que deseja inicializar: ");
+    scanf("%s", nome_arq);
+    scanf("");*/
+
+    inicializa("alunos.txt");
+    limpa_tela();
+
+    menu("alunos.txt");
+
+    return 0;
+
+}
 
 
