@@ -61,18 +61,19 @@ void menu(char *nome_arq){
 
         printf("Opcao: ");
         scanf("%d", &opc);
-        scanf("");
+        //scanf("");
+        getchar() != '\n';
         printf("\n");
 
         switch(opc){
 
             case 0:
                 printf("Digite o nome do aluno: ");
-                scanf("%s", aluno_temp.nome);
+                scanf("%[^\n]%*c", aluno_temp.nome);
                 printf("\n");
 
                 printf("Digite o nome do curso do aluno: ");
-                scanf("%s", aluno_temp.curso);
+                scanf("%[^\n]%*c", aluno_temp.curso);
                 printf("\n");
 
                 printf("Digite o a matricula do aluno: ");
@@ -141,10 +142,16 @@ void imprimir(char *nome_arq, int mat){
 
     if(fread(&a, sizeof(registro), 1, arq) == 1){
 
+        limpa_tela();
         printf("Nome: %s\n", a.nome);
         printf("Curso: %s\n", a.curso);
-        printf("Matricula: %d\n", a.mat);
+        printf("Matricula: %d\n\n", a.mat);
 
+    }
+
+    else {
+      limpa_tela();
+      printf("Aluno nao encontrado!\n\n");
     }
 
 
