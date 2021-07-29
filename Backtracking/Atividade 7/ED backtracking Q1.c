@@ -1,7 +1,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 
-void ImprimirCombinacoes(char *comb, int pos, int n, char *aux) {
+void ImprimirCombinacoes(char *comb, int pos, int n, char *aux){
   int a = 0;
   if (pos == n) {
     for (size_t i = 0; i <= n; i++) {
