@@ -1,3 +1,5 @@
+// Alunos: Bruno Costa dos Passos, Kamile Novaes, Raphael Kazuhiro Yoshiki
+
 #include <stdio.h>
 #include <stdlib.h>
 
