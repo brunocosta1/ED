@@ -129,11 +129,34 @@ void saidaVertice(lista *l, int cont) {
 }
 
 
+int contSaida(lista *l, int n, int cont) {
+  if (l != NULL) {
+    cont++;
+    cont = cont + contSaida(l->prox, n, cont);
+  }
+  return cont;
+}
+
+void grafoCompleto(lista **g, int n) {
+  int temp;
+  for (size_t i = 1; i <= n; i++) {
+    temp = contSaida(g[i], n, 0);
+    if (temp < n-1) {
+      printf("O grafo nao esta completo.\n");
+      break;
+    }
+    else if (i == n) {
+      printf("O grafo esta completo.\n");
+    }
+  }
+}
+
+
 void menu(lista **g){
 
 	int n=0, x=0;
 	int origem=0, destino=0, arestas=0, custo=0;
-	printf("Qual o tamanho do vetor: ");
+	printf("Insira o tamanho do vetor: ");
 	scanf("%d",&n);
 
 	g=(lista**)malloc((n+1)*sizeof(lista*));
@@ -172,9 +195,9 @@ void menu(lista **g){
 				scanf("%d", &destino);
 				printf("Custo: ");
 				scanf("%d", &custo);
-                RemoverAresta(g,origem,destino,custo);
-                arestas--;
-                limpa_tela();
+        RemoverAresta(g,origem,destino,custo);
+        arestas--;
+        limpa_tela();
 				break;
 
 			case 3:
@@ -192,7 +215,18 @@ void menu(lista **g){
 				break;
 
 			case 5:
+        limpa_tela();
+        grafoCompleto(g, n);
 				break;
+
+      case 6:
+        exit(0);
+        break;
+
+      default:
+        limpa_tela();
+        printf("Opcao invalida, tente novamente.\n");
+        break;
 
 		}
 	}
@@ -206,6 +240,5 @@ int main(){
 
 	return 0;
 }
-
 
 
