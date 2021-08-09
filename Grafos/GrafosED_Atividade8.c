@@ -132,7 +132,7 @@ void saidaVertice(lista *l, int cont) {
 int contSaida(lista *l, int n, int cont) {
   if (l != NULL) {
     cont++;
-    cont = cont + contSaida(l->prox, n, cont);
+    cont = cont + contSaida(l->prox, n, 0);
   }
   return cont;
 }
@@ -152,6 +152,64 @@ void grafoCompleto(lista **g, int n) {
 }
 
 
+//Funções para impressão de caminhos (opção 6)
+int existe(int *arr, int val, int n) {
+  for (size_t i = 0; i < n; i++) {
+    if (arr[i] == val) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
+void caminhos(lista **g, int *arr, int n, int pos) {
+  if (arr[pos - 1] == n) {
+    putchar('\n');
+    for (size_t i = 0; i < pos; i++) {
+      if (i == 0) {
+        printf("%d", arr[i]);
+      }
+      else {
+        printf("->%d", arr[i]);
+      }
+    }
+    putchar('\n');
+  }
+  else {
+    lista *p = g[arr[pos - 1]];
+    while (p != NULL) {
+      if (!existe(arr, p->destino, pos)) {
+        arr[pos] = p->destino;
+        caminhos(g, arr, n, pos + 1);
+      }
+      p = p->prox;
+    }
+  }
+}
+
+
+//Funções para caminhos curtos/baratos (opções 7 e 8)
+//INCOMPLETO
+/*int caminhoCurto(lista *l, int ct, int toggle, int case) {
+  if (l != NULL) {
+    cont++;
+    cont = contEntrada(l->prox, x, cont);
+  }
+  return cont;
+}
+
+int caminhoBarato()
+
+void verifCaminho(lista **g, int arr*, int n, int pos, int toggle) {
+  for (size_t i = 0; i < n; i++) {
+    vet[0] = i;
+    for (size_t j = 0; j < pos; j++) {
+
+    }
+  }
+}*/
+
+
 void menu(lista **g){
 
 	int n=0, x=0;
@@ -162,14 +220,19 @@ void menu(lista **g){
 	g=(lista**)malloc((n+1)*sizeof(lista*));
 	inicializar(g,n);
 
-	while(x!=6){
+  int *vet;
+
+	while(x != 9){
 
 		printf("\n[1] - Inserir uma aresta.\n");
 		printf("[2] - Remover uma aresta.\n");
 		printf("[3] - Imprimir grafo.\n");
 		printf("[4] - Imprimir os graus de entrada e saida de um vertice.\n");
 		printf("[5] - Verificar se um grafo eh completo.\n");
-		printf("[6] - Sair.\n");
+    printf("[6] - Imprimir os caminhos entre uma origem e um destino.\n");
+    printf("[7] - Imprimir o caminho mais curto.\n");
+    printf("[8] - Imprimir o caminho de menor custo.\n");
+		printf("[9] - Sair.\n");
 
 		printf("\nDigite a opcao: ");
 		scanf("%d", &x);
@@ -220,6 +283,26 @@ void menu(lista **g){
 				break;
 
       case 6:
+        vet = (int*)malloc(n*sizeof(int));
+        putchar('\n');
+        printf("Insira a origem: ");
+        scanf("%d", &origem);
+        vet[0] = origem;
+        putchar('\n');
+        printf("Insira o destino: ");
+        scanf("%d", &destino);
+        limpa_tela();
+        caminhos(g, vet, destino, 1);
+      	break;
+
+      case 7:
+        vet = (int*)malloc(n*sizeof(int));
+      	break;
+
+      case 8:
+      	break;
+
+      case 9:
         exit(0);
         break;
 
@@ -240,5 +323,6 @@ int main(){
 
 	return 0;
 }
+
 
 
