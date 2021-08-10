@@ -163,6 +163,7 @@ int existe(int *arr, int val, int n) {
 }
 
 void caminhos(lista **g, int *arr, int n, int pos) {
+
   if (arr[pos - 1] == n) {
     putchar('\n');
     for (size_t i = 0; i < pos; i++) {
@@ -187,27 +188,92 @@ void caminhos(lista **g, int *arr, int n, int pos) {
   }
 }
 
+void caminho_mais_curto(lista **g, int *arr, int n, int pos, int *cam_curto, int *tam_curto){
 
-//Funções para caminhos curtos/baratos (opções 7 e 8)
-//INCOMPLETO
-/*int caminhoCurto(lista *l, int ct, int toggle, int case) {
-  if (l != NULL) {
-    cont++;
-    cont = contEntrada(l->prox, x, cont);
+  if(arr[pos - 1] == n && pos < *tam_curto){
+
+      *tam_curto = pos;
+
+      for(int i = 0; i < pos; i++)
+          cam_curto[i] = arr[i];
+
+  }else{
+
+    lista *p = g[arr[pos - 1]];
+    while (p != NULL) {
+      if (!existe(arr, p->destino, pos)) {
+        arr[pos] = p->destino;
+        caminho_mais_curto(g, arr, n, pos + 1, cam_curto, tam_curto);
+      }
+      p = p->prox;
+    }
   }
-  return cont;
 }
 
-int caminhoBarato()
 
-void verifCaminho(lista **g, int arr*, int n, int pos, int toggle) {
-  for (size_t i = 0; i < n; i++) {
-    vet[0] = i;
-    for (size_t j = 0; j < pos; j++) {
+int calcula_custo_aresta(lista **g, int pos_ini, int dest){
+
+    lista *p = g[pos_ini];
+
+    while(p != NULL){
+
+        if(p->destino == dest)
+            return p->custo;
+
+        p = p->prox;
+    }
+
+
+}
+
+int calcula_custo_caminho(lista **g, int *arr, int pos){
+
+    int custo = 0;
+
+    for(int i = 1; i < pos; i++)
+        custo += calcula_custo_aresta(g, arr[i-1], arr[i]);
+
+
+    return custo;
+}
+
+void caminho_mais_barato(lista **g, int *arr, int dest, int pos, int *cam_barato, int *cam_menor_custo, int *cam_menor_tam){
+
+    if(arr[pos-1] == dest){
+
+        int custo = calcula_custo_caminho(g, arr, pos);
+
+        if(*cam_menor_custo == 0 || custo < *cam_menor_custo){//Primeiro caminho calculado
+
+            *cam_menor_custo = custo;
+            *cam_menor_tam = pos;
+
+            for(int i = 0; i < pos; i++)
+                cam_barato[i] = arr[i];
+
+        } 
+
+        
+    }else{
+
+    lista *p = g[arr[pos - 1]];
+    while (p != NULL) {
+
+      if (!existe(arr, p->destino, pos)) {
+        arr[pos] = p->destino;
+        caminho_mais_barato(g, arr, dest, pos+1, cam_barato, cam_menor_custo, cam_menor_tam);
+      }
+      p = p->prox;
 
     }
   }
-}*/
+}
+
+
+
+
+
+
 
 
 void menu(lista **g){
@@ -220,7 +286,7 @@ void menu(lista **g){
 	g=(lista**)malloc((n+1)*sizeof(lista*));
 	inicializar(g,n);
 
-  int *vet;
+    int *vet;
 
 	while(x != 9){
 
@@ -229,9 +295,9 @@ void menu(lista **g){
 		printf("[3] - Imprimir grafo.\n");
 		printf("[4] - Imprimir os graus de entrada e saida de um vertice.\n");
 		printf("[5] - Verificar se um grafo eh completo.\n");
-    printf("[6] - Imprimir os caminhos entre uma origem e um destino.\n");
-    printf("[7] - Imprimir o caminho mais curto.\n");
-    printf("[8] - Imprimir o caminho de menor custo.\n");
+        printf("[6] - Imprimir os caminhos entre uma origem e um destino.\n");
+        printf("[7] - Imprimir o caminho mais curto.\n");
+        printf("[8] - Imprimir o caminho de menor custo.\n");
 		printf("[9] - Sair.\n");
 
 		printf("\nDigite a opcao: ");
@@ -258,9 +324,9 @@ void menu(lista **g){
 				scanf("%d", &destino);
 				printf("Custo: ");
 				scanf("%d", &custo);
-        RemoverAresta(g,origem,destino,custo);
-        arestas--;
-        limpa_tela();
+                RemoverAresta(g,origem,destino,custo);
+                arestas--;
+                limpa_tela();
 				break;
 
 			case 3:
@@ -270,16 +336,16 @@ void menu(lista **g){
 				break;
 
 			case 4:
-        printf("Insira o valor do vertice: ");
-        scanf("%d", &origem);
-        limpa_tela();
-        entradaVertice(g, origem, n);
-        saidaVertice(g[origem], 0);
+                printf("Insira o valor do vertice: ");
+                scanf("%d", &origem);
+                limpa_tela();
+                entradaVertice(g, origem, n);
+                saidaVertice(g[origem], 0);
 				break;
 
 			case 5:
-        limpa_tela();
-        grafoCompleto(g, n);
+                limpa_tela();
+                grafoCompleto(g, n);
 				break;
 
       case 6:
@@ -293,14 +359,56 @@ void menu(lista **g){
         scanf("%d", &destino);
         limpa_tela();
         caminhos(g, vet, destino, 1);
+        free(vet);
       	break;
 
       case 7:
         vet = (int*)malloc(n*sizeof(int));
+        int *cam_curto, tam_curto = n;
+        cam_curto = (int*)malloc(n*sizeof(int));
+
+        printf("Insira a origem: ");
+        scanf("%d", &origem);
+        vet[0] = origem;
+        putchar('\n');
+        printf("Insira o destino: ");
+        scanf("%d", &destino);
+        limpa_tela();
+        caminho_mais_curto(g, vet, destino, 1, cam_curto, &tam_curto);
+
+        for(int i = 0; i < tam_curto; i++)
+            if(i == 0)
+                printf("%d", cam_curto[i]);
+            else
+                printf("->%d", cam_curto[i]);
+
+        free(vet);
+        free(cam_curto);
       	break;
 
       case 8:
-      	break;
+        vet = (int*)malloc(n*sizeof(int));
+        int *cam_barato, cam_menor_custo = 0, cam_menor_tam = n;
+        cam_barato = (int*)malloc(n*sizeof(int));
+
+        printf("Insira a origem: ");
+        scanf("%d", &origem);
+        vet[0] = origem;
+        putchar('\n');
+        printf("Insira o destino: ");
+        scanf("%d", &destino);
+        limpa_tela();	
+        caminho_mais_barato(g, vet, destino, 1, cam_barato, &cam_menor_custo, &cam_menor_tam);
+
+        for(int i = 0; i < cam_menor_tam; i++)
+            if(i == 0)
+                printf("%d", cam_barato[i]);
+            else
+                printf("->%d", cam_barato[i]);
+
+        free(vet);
+        free(cam_barato);
+        break;
 
       case 9:
         exit(0);
