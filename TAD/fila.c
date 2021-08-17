@@ -44,6 +44,7 @@ void Inserir(Fila f, int x){
 
 void Remove(Fila f){
 
+    system("clear");
     printf("Item removido: %d\n", f->vet[f->primeiro]);
     f->vet[f->primeiro] = -1;
 
@@ -54,6 +55,7 @@ void Remove(Fila f){
 
 void Imprimir(Fila f){
 
+    system("clear");
     for(int i = 0; i < N; i++){
 
         if(f->vet[i] != -1)
@@ -88,6 +90,7 @@ void Menu(){
                 printf("Digite o elemento a ser inserido:\n");
                 scanf("%d", &temp);
                 Inserir(fila, temp);
+                system("clear");
                 break;
             
             case 1:
