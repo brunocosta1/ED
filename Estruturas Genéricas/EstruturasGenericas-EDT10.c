@@ -71,6 +71,7 @@ Pessoas *Remove(Pessoas *p, int mat){
 		if(p->tipo==1){
 			Professor *b = (Professor*)p->dados;
      		 if (b->matricula == mat) {
+                free(b);
      		 	free(p);
 				return a;
 			  }else
@@ -80,6 +81,7 @@ Pessoas *Remove(Pessoas *p, int mat){
 		else if(p->tipo==2){
 			Aluno *b = (Aluno*)p->dados;
      		 if (b->matricula == mat) {
+                free(b);
      		 	free(p);
 				return a;
 			  }else
