@@ -4,6 +4,24 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef __unix__
+    #include <unistd.h>
+
+#elif defined(_WIN32) || defined(WIN32)
+    #define OS_Windows
+    #include <windows.h>
+#endif
+
+
+void limpa_tela(){
+
+    #ifdef OS_Windows
+        system("cls");
+    #else
+        system("clear");
+    #endif
+
+}
 
 
 typedef struct professores{
@@ -45,6 +63,7 @@ Pessoas *insereInicio(Pessoas *p, void *dados, int tipo){
 
 Pessoas *Remove(Pessoas *p, int mat){
 	
+
 	if(p!=NULL){
 		Pessoas *a;
 		a=p->prox;
@@ -73,13 +92,15 @@ Pessoas *Remove(Pessoas *p, int mat){
 }
 
 void PesquisarPessoa(Pessoas *p, int mat){
-	
+    	
+    limpa_tela();
+
 	if(p!=NULL){
 		
 		if(p->tipo==1){
 			Professor *a = (Professor*)p->dados;
 			if(a->matricula==mat){
-				printf("\nNome: %s\nOcupacao: Professor\nMatricula: %d\nSalario: %.2f", a->nome, a->matricula, a->salario );
+				printf("\nNome: %s\nOcupacao: Professor\nMatricula: %d\nSalario: %.2f\n\n", a->nome, a->matricula, a->salario );
 			}
 			else{
 				PesquisarPessoa(p->prox, mat);
@@ -88,7 +109,7 @@ void PesquisarPessoa(Pessoas *p, int mat){
 		else if(p->tipo==2){
 			Aluno *b = (Aluno*)p->dados;
 			if(b->matricula==mat){
-				printf("\nNome: %s\nOcupacao: Aluno\nMatricula: %d\nCurso: %s\nAno de ingresso: %d\n", b->nome, b->matricula, b->curso, b->ano);
+				printf("\nNome: %s\nOcupacao: Aluno\nMatricula: %d\nCurso: %s\nAno de ingresso: %d\n\n", b->nome, b->matricula, b->curso, b->ano);
 			}
 			else{
 				PesquisarPessoa(p->prox, mat);
@@ -127,7 +148,7 @@ void ProfSalarios(Pessoas *p, float salarioalto){
 		if(p->tipo==1){
 			Professor *a = (Professor*)p->dados;
 			if(a->salario>=salarioalto){
-				printf("%s %d\n", a->nome, a->matricula);
+				printf("%s %d\n\n", a->nome, a->matricula);
 			}
 		}
 		else{
@@ -190,12 +211,14 @@ void menu(Pessoas *p){
 				else{
 					printf("Nenhuma das opcoes disponiveis.");
 				}
+                limpa_tela();
 				break;
 			
 			case 2:
 				printf("Digite a matricula: ");
 				scanf("%d", &mat);
 				p=Remove(p,mat);
+                limpa_tela();
 				break;
 				
 			case 3:
@@ -208,11 +231,13 @@ void menu(Pessoas *p){
 			case 4:
 				printf("Digite o curso: ");
 				scanf("%s", curso);
+                limpa_tela();
 				printf("Alunos: %d\n", ContarAlunos(p,curso));
 				break;
 				
 			case 5:
 				salarioalto=4000;
+                limpa_tela();
 				ProfSalarios(p,salarioalto);
 				break;
 			
