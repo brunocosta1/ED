@@ -224,12 +224,31 @@ void menu(Pessoas *p){
 	
 }
 
+Pessoas *DestroiLista(Pessoas *p){
+
+    if(p != NULL){
+        Pessoas *aux = p->prox;
+        while(aux != NULL){
+
+            p->prox = NULL;
+            free(p);
+            p = aux;
+            aux = aux->prox;
+
+        }
+    }
+
+    return NULL;
+
+}
+
 int main(){
 
 	Pessoas *p = NULL;
 
 	menu(p);
 
+    p = DestroiLista(p);
 
     return 0;
 	
