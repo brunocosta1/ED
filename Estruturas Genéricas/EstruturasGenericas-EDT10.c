@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
 
 
 typedef struct professores{
@@ -33,12 +35,11 @@ typedef struct pessoas{
 Pessoas *insereInicio(Pessoas *p, void *dados, int tipo){
 	
 	Pessoas *no=(Pessoas*) malloc(sizeof(Pessoas));
-	Pessoas *oldhead = p->prox;
- 
- 	p->dados=dados;
-	p->prox = no;
-	no->prox = oldhead;
- 
+
+    no->tipo = tipo;
+    no->dados = dados;
+    no->prox = p;
+
 	return no;
 }
 
@@ -49,32 +50,29 @@ Pessoas *Remove(Pessoas *p, int mat){
 		a=p->prox;
 		
 		if(p->tipo==1){
-			Professor *a = (Professor*)p->dados;
-     		 if (a->matricula == mat) {
+			Professor *b = (Professor*)p->dados;
+     		 if (b->matricula == mat) {
      		 	free(p);
 				return a;
-			  }
-			  else{
+			  }else
 			  	p->prox=Remove(p->prox, mat);
-			  }
+			  
 		}
 		else if(p->tipo==2){
-			Aluno *a = (Aluno*)p->dados;
-     		 if (a->matricula == mat) {
+			Aluno *b = (Aluno*)p->dados;
+     		 if (b->matricula == mat) {
      		 	free(p);
 				return a;
-			  }
-			  else{
+			  }else
 			  	p->prox=Remove(p->prox, mat);
-			  }
 		}
 	}
-	else{
+	else
 		return NULL;
-	}
+	
 }
 
-void *PesquisarPessoa(Pessoas *p, int mat){
+void PesquisarPessoa(Pessoas *p, int mat){
 	
 	if(p!=NULL){
 		
@@ -103,7 +101,7 @@ void *PesquisarPessoa(Pessoas *p, int mat){
 
 }
 
-Pessoas *ContarAlunos(Pessoas *p, char curso){
+int ContarAlunos(Pessoas *p, char *curso){
 	
 	if(p!=NULL){
 		
@@ -119,7 +117,7 @@ Pessoas *ContarAlunos(Pessoas *p, char curso){
 	}
 }
 
-void *ProfSalarios(Pessoas *p, float salarioalto){
+void ProfSalarios(Pessoas *p, float salarioalto){
 	
 	if(p!=NULL){
 		
@@ -157,12 +155,14 @@ void menu(Pessoas *p){
 			case 1:
 				printf("\n1 - PROFESSOR\n2 - ALUNO\n");
 				scanf("%d", &y);
+                putc('\n', stdin);
 			
 				if(y==1){
 					Professor *prof;
 					prof=(Professor*)malloc(sizeof(Professor));
 					printf("Matricula: ");
-					scanf("%d", prof->matricula);
+					scanf("%d", &prof->matricula);
+                    putc('\n', stdin); 
 					printf("Nome: ");
 					scanf("%s", prof->nome);
 					//printf("Salario:");
@@ -173,13 +173,14 @@ void menu(Pessoas *p){
 					Aluno *aluno;
 					aluno=(Aluno*)malloc(sizeof(Aluno));
 					printf("Matricula: ");
-					scanf("%d", aluno->matricula);
+					scanf("%d", &aluno->matricula);
+                    putc('\n', stdin);
 					printf("Nome: ");
 					scanf("%s", aluno->nome);					
 					printf("Curso: ");
 					scanf("%s", aluno->curso);
-					//printf("Ano de ingresso: ");
-					//scanf("%d", aluno->ano);
+					printf("Ano de ingresso: ");
+                    scanf("%d", &aluno->ano);
 					p=insereInicio(p,aluno,y);
 				}
 				else{
@@ -196,12 +197,13 @@ void menu(Pessoas *p){
 			case 3:
 				printf("Digite a matricula: ");
 				scanf("%d", &mat);
+                putc('\n', stdin);
 				PesquisarPessoa(p,mat);
 				break;
 			
 			case 4:
 				printf("Digite o curso: ");
-				scanf("%s", &curso);
+				scanf("%s", curso);
 				printf("Alunos: %d", ContarAlunos(p,curso));
 				break;
 				
@@ -218,11 +220,15 @@ void menu(Pessoas *p){
 	
 }
 
-main(){
+int main(){
 
-	Pessoas *p = (Pessoas*) malloc(sizeof(Pessoas));
-	p->prox = NULL;
+	Pessoas *p = NULL;
+
 	menu(p);
+
+    free(p);
+
+    return 0;
 	
 }
 
