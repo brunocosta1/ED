@@ -34,11 +34,11 @@ typedef struct pessoas{
 
 Pessoas *insereInicio(Pessoas *p, void *dados, int tipo){
 	
-	Pessoas *no=(Pessoas*) malloc(sizeof(Pessoas));
-
+    Pessoas *no=(Pessoas*) malloc(sizeof(Pessoas));
     no->tipo = tipo;
     no->dados = dados;
     no->prox = p;
+
 
 	return no;
 }
@@ -101,12 +101,14 @@ void PesquisarPessoa(Pessoas *p, int mat){
 
 }
 
-int ContarAlunos(Pessoas *p, char *curso){
+int ContarAlunos(Pessoas *p, char curso[50]){
 	
 	if(p!=NULL){
 		
 		if(p->tipo==2){
+
 			Aluno *a = (Aluno*)p->dados;
+
 			if(strcmp(curso,a->curso)==0){
 				return 1 + ContarAlunos(p->prox, curso);
 			}
@@ -114,7 +116,8 @@ int ContarAlunos(Pessoas *p, char *curso){
 		else{
 			return ContarAlunos(p->prox, curso);
 		}
-	}
+	}else
+        return 0;
 }
 
 void ProfSalarios(Pessoas *p, float salarioalto){
@@ -123,8 +126,8 @@ void ProfSalarios(Pessoas *p, float salarioalto){
 		
 		if(p->tipo==1){
 			Professor *a = (Professor*)p->dados;
-			if(a->salario==salarioalto){
-				printf("%s %d", a->nome, a->matricula);
+			if(a->salario>=salarioalto){
+				printf("%s %d\n", a->nome, a->matricula);
 			}
 		}
 		else{
@@ -136,7 +139,7 @@ void ProfSalarios(Pessoas *p, float salarioalto){
 void menu(Pessoas *p){
 	
 	int x, y, mat;
-	char *curso;
+	char curso[50];
 	float salarioalto;
 	
 	while(x!=6){
@@ -165,9 +168,10 @@ void menu(Pessoas *p){
                     putc('\n', stdin); 
 					printf("Nome: ");
 					scanf("%s", prof->nome);
-					//printf("Salario:");
-					//scanf("%f", prof->salario);
-					p=insereInicio(p,prof,y);
+					printf("Salario:");
+					scanf("%f", &prof->salario);
+                    putc('\n', stdin);
+					p = insereInicio(p,prof,y);
 				}
 				else if(y==2){
 					Aluno *aluno;
@@ -204,7 +208,7 @@ void menu(Pessoas *p){
 			case 4:
 				printf("Digite o curso: ");
 				scanf("%s", curso);
-				printf("Alunos: %d", ContarAlunos(p,curso));
+				printf("Alunos: %d\n", ContarAlunos(p,curso));
 				break;
 				
 			case 5:
@@ -226,7 +230,6 @@ int main(){
 
 	menu(p);
 
-    free(p);
 
     return 0;
 	
