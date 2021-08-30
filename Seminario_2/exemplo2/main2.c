@@ -17,7 +17,7 @@ int main(){
 
         Produto p;
 
-        printf("Forneça as informações do produto:\n");
+        printf("\nForneça as informações do produto:\n");
         printf("Nome: ");
         scanf("%s", p.nome);
         printf("Preço: ");
@@ -31,7 +31,9 @@ int main(){
 
     }
 
+    printf("\n");
     Imprimir(h);
+    printf("\n");
 
     for(int i = 0; i < 3; i++){
 
@@ -40,12 +42,11 @@ int main(){
 
         key = Remover(h, &obj, sizeof(obj));
 
-        printf("\n Chave: %d\t Objeto: (%s, %.2f)\n", obj.codigo, obj.nome, obj.preco);
+        printf("Chave: %d\t Objeto: (%s, %.2f)\n", obj.codigo, obj.nome, obj.preco);
         Imprimir(h);
         printf("\n");
 
     }
-
 
     h = Destruir(h);
 
