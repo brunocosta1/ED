@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "./lib/maxheap.h"
+#include "../lib/maxheap.h"
 
 typedef struct produto{
 
@@ -8,11 +8,6 @@ typedef struct produto{
     int codigo;
 
 }Produto;
-
-
-
-
-
 
 int main(){
 
@@ -43,7 +38,7 @@ int main(){
         int key;
         Produto obj;
 
-        Remover(h, &key, &obj, sizeof(obj));
+        key = Remover(h, &obj, sizeof(obj));
 
         printf("\n Chave: %d\t Objeto: (%s, %.2f)\n", obj.codigo, obj.nome, obj.preco);
         Imprimir(h);
@@ -53,10 +48,6 @@ int main(){
 
 
     h = Destruir(h);
-
-
-
-
 
     return 0;
 

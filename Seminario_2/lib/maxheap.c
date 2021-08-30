@@ -85,19 +85,20 @@ int indicePai(int x){
 	}
 }
 
-//Inserir e ajustar a heap
+void swap(Heap heap, int pos1, int pos2){
 
-void swap(Heap heap, int pos, int pai){
+    int aux = heap->vet[pos1].chave;
+    heap->vet[pos1].chave = heap->vet[pos2].chave;
+    heap->vet[pos2].chave = aux;
 
-    int aux = heap->vet[pos].chave;
-    heap->vet[pos].chave = heap->vet[pai].chave;
-    heap->vet[pai].chave = aux;
-
-    void *temp = heap->vet[pos].obj;
-    heap->vet[pos].obj = heap->vet[pai].obj;
-    heap->vet[pai].obj = temp;
+    void *temp = heap->vet[pos1].obj;
+    heap->vet[pos1].obj = heap->vet[pos2].obj;
+    heap->vet[pos2].obj = temp;
 
 }
+
+//Inserir e ajustar a heap
+
 
 void AjustarSubindo(Heap heap, int pos){
 	
@@ -153,7 +154,7 @@ void AjustarDescendo(Heap heap, int pos){
 	}
 }
 
-int Remover(Heap heap, int *chave, void *objeto, int sizeObj){
+int Remover(Heap heap, void *objeto, int sizeObj){
 	
 	if(totalElementos==0){
 		return -1;
@@ -165,7 +166,6 @@ int Remover(Heap heap, int *chave, void *objeto, int sizeObj){
 
         //Copiando o objeto a ser removido.
 
-        *chave = heap->vet[0].chave;
         memcpy(objeto, heap->vet[0].obj, sizeObj);
 
         //Trocando 

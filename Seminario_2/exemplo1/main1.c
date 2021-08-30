@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "./lib/maxheap.h"
+#include "../lib/maxheap.h"
 
 typedef struct moto{
 
@@ -41,7 +41,7 @@ int main(){
             int key;
             Moto obj;
 
-            Remover(h, &key, &obj, sizeof(obj));
+            key = Remover(h, &obj, sizeof(obj));
 
             printf("\nChave: %d\t Objeto: (%s, %s, %d)\n", obj.renavam, obj.modelo, obj.marca, obj.ano);
             Imprimir(h);
@@ -50,7 +50,6 @@ int main(){
     }
 
     h = Destruir(h);
-
 
     return 0;
 }
