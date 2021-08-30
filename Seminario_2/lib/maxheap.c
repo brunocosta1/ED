@@ -196,3 +196,13 @@ void Imprimir(Heap heap){
 
 }
 
+int Existe(Heap h, int chave){
+
+    for(int i = 0; i < totalElementos; i++)
+        if(h->vet[i].chave == chave)
+            return 1;
+
+    return 0;
+
+}
+

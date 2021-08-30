@@ -5,9 +5,9 @@ typedef struct heap *Heap;
 
 Heap Inicializar();
 Heap Destruir(Heap h);
-int Inserir(Heap p, int chave, void *objeto, int sizeObj);
-int Remover(Heap p, int *chave, void *objeto, int sizeObj);
+int Inserir(Heap h, int chave, void *objeto, int sizeObj);
+int Remover(Heap h, int *chave, void *objeto, int sizeObj);
 void Imprimir(Heap heap);
-int Existe(Heap p, int chave);
+int Existe(Heap h, int chave);
 
 #endif

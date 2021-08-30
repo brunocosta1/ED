@@ -1,5 +1,4 @@
 #include <stdio.h>
-
 #include "./lib/maxheap.h"
 
 typedef struct moto{
@@ -31,21 +30,22 @@ int main(){
         scanf("%d", &m.renavam);
         putc('\n', stdin);
 
-        Inserir(h, m.renavam, &m, sizeof(m));
+        if(!Existe(h, m.renavam))
+            Inserir(h, m.renavam, &m, sizeof(m));
     }
 
     Imprimir(h);
 
     for(int i = 0; i < 3; i++){
 
-        int key;
-        Moto obj;
+            int key;
+            Moto obj;
 
-        Remover(h, &key, &obj, sizeof(obj));
+            Remover(h, &key, &obj, sizeof(obj));
 
-        printf("\nChave: %d\t Objeto: (%s, %s, %d)\n", obj.renavam, obj.modelo, obj.marca, obj.ano);
-        Imprimir(h);
-        printf("\n");
+            printf("\nChave: %d\t Objeto: (%s, %s, %d)\n", obj.renavam, obj.modelo, obj.marca, obj.ano);
+            Imprimir(h);
+            printf("\n");
 
     }
 
