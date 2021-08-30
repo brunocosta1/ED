@@ -18,7 +18,7 @@ int main(){
 
         Moto m;
 
-        printf("Forneça as informações da moto:\n");
+        printf("\nForneça as informações da moto:\n");
         printf("Marca: ");
         scanf("%s", m.marca);
         printf("Modelo: ");
@@ -34,7 +34,9 @@ int main(){
             Inserir(h, m.renavam, &m, sizeof(m));
     }
 
+    printf("\n");
     Imprimir(h);
+    printf("\n");
 
     for(int i = 0; i < 3; i++){
 
@@ -43,7 +45,7 @@ int main(){
 
             key = Remover(h, &obj, sizeof(obj));
 
-            printf("\nChave: %d\t Objeto: (%s, %s, %d)\n", obj.renavam, obj.modelo, obj.marca, obj.ano);
+            printf("Chave: %d\t Objeto: (%s, %s, %d)\n", obj.renavam, obj.modelo, obj.marca, obj.ano);
             Imprimir(h);
             printf("\n");
 
